@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dynamic Bar Chart</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <canvas id="myChart"></canvas>
+
+    <script>
+        async function fetchData() {
+            try {
+                const response = await fetch('http://localhost:3000'); // Assuming your server is running locally
+                const data = await response.json();
+
+                // Store data in variables
+                const viewsData = data.views;
+                const downloadsData = data.downloads;
+                var labels = data.xlabels;
+                console.log(labels)
+
+                function mapToFormattedArray(arr) {
+                    return arr.map(dateString => {
+                    const [year, month] = dateString.split('-');
+                    const monthIndex = parseInt(month, 10) - 1; // Month indices start from 0
+                    const dateObj = new Date(year, monthIndex);
+                
+                    // Format the date as 'Mon YYYY'
+                    const formattedDate = new Intl.DateTimeFormat('en-US', {
+                        year: 'numeric',
+                        month: 'short'
+                    }).format(dateObj);
+                
+                    return formattedDate;
+                    });
+                }
+  
+                var labels = mapToFormattedArray(labels);
+
+                // Use the variables to create the chart
+                const ctx = document.getElementById('myChart').getContext('2d');
+
+                const myChart = new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                        labels: labels,
+                        datasets: [
+                            {
+                                label: 'Views over past 6 months',
+                                data: viewsData,
+                                backgroundColor: 'rgba(0, 76, 155, 0.3)',
+                                borderColor: 'rgba(0, 76, 155, 1)',
+                                borderWidth: 1,
+                            },
+                            {
+                                label: 'Downloads over past 6 months',
+                                data: downloadsData,
+                                backgroundColor: 'rgba(255, 220, 0, 0.3)',
+                                borderColor: 'rgba(255, 220, 0, 1)',
+                                borderWidth: 1,
+                            },
+                        ],
+                    },
+                    options: {
+                        scales: {
+                                x: { stacked: false },
+                                y: { stacked: false }
+                            },
+                    }
+                });
+            } catch (error) {
+                console.error('Error fetching data:', error);
+            }
+        }
+        fetchData();
+    </script>
+</body>
+</html>
