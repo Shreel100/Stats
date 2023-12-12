@@ -40,7 +40,7 @@ async function fetchTitle(){
     let zip = (a1, a2) => a1.map((x, i) => [x, a2[i]]);
     array = zip(title_list, values)
     for (let i=0;i<10;i++){
-        console.log(`${array[i][0]}: ${array[i][1]}`)
+        console.log(`'${array[i][0]}': '${array[i][1]}'`)
     }
 }
 

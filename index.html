@@ -9,7 +9,7 @@
 <body>
     <div class="master">
         <canvas id="myChart"></canvas>
-        <div id="topViewsbyCountries"></div>
+        <div id="titles"></div>
     </div>
 
     <script>
@@ -22,7 +22,9 @@
                 const viewsData = data.views;
                 const downloadsData = data.downloads;
                 const countriesData = data.finalData
+                const titleData = data.titles
                 var labels = data.xlabels;
+                console.log(titleData)
 
                 function mapToFormattedArray(arr) {
                     return arr.map(dateString => {
@@ -41,6 +43,14 @@
                 }
   
                 var labels = mapToFormattedArray(labels);
+
+                let titles = '';
+                for (let i = 0; i < 10; i++) {
+                    titles += `<li>${titleData[i][0]}: ${titleData[i][1]}</li>`;
+                }
+
+                document.getElementById('titles').innerHTML = titles;
+
 
                 // Use the variables to create the chart
                 const ctx = document.getElementById('myChart').getContext('2d');

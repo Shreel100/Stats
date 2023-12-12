@@ -1,7 +1,7 @@
 var xlabels
 
     function getDate(){
-        const date = new Date()
+        const date = new Date('2023-02-01')
         date.setUTCHours(0, 0, 0, 0);
         const Month = date.getUTCMonth()
         const Year = date.getUTCFullYear()
